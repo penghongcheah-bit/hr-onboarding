@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Staff Onboarding Form</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f4f4f1; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.fw { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.header { border-radius: 12px; border: 0.5px solid #e0e0d8; background: #fff; padding: 1.5rem; margin-bottom: 1.25rem; border-top: 5px solid #185FA5; }
+.header h1 { font-size: 20px; font-weight: 500; color: #1a1a1a; margin-bottom: 6px; }
+.header p { font-size: 13px; color: #666; line-height: 1.6; }
+.page { display: none; }
+.page.active { display: block; }
+.card { background: #fff; border: 0.5px solid #e0e0d8; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+.sec-title { font-size: 15px; font-weight: 500; color: #1a1a1a; margin-bottom: 1rem; padding-bottom: 8px; border-bottom: 0.5px solid #e0e0d8; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid1 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.span2 { grid-column: span 2; }
+.fi { display: flex; flex-direction: column; gap: 5px; }
+label.lbl { font-size: 13px; color: #666; }
+label.lbl .req { color: #E24B4A; }
+input[type=text], input[type=email], input[type=date], input[type=tel], input[type=number], select, textarea {
+  width: 100%; padding: 8px 10px; font-size: 14px;
+  border: 0.5px solid #ccc; border-radius: 8px;
+  background: #fff; color: #1a1a1a; font-family: inherit;
+}
+input[type=file] {
+  width: 100%; padding: 6px 8px; font-size: 13px;
+  border: 1px dashed #185FA5; border-radius: 8px;
+  background: #f0f6fd; color: #185FA5; font-family: inherit; cursor: pointer;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: #185FA5; box-shadow: 0 0 0 2px rgba(24,95,165,0.12); }
+input.error, select.error, textarea.error { border-color: #E24B4A !important; background: #fff8f8; }
+textarea { resize: vertical; min-height: 72px; }
+.helper { font-size: 12px; color: #999; }
+.err-msg { font-size: 12px; color: #E24B4A; margin-top: 2px; display: none; }
+.err-msg.show { display: block; }
+.info-box { background: #E6F1FB; border: 0.5px solid #B5D4F4; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #0C447C; margin-bottom: 1rem; line-height: 1.6; }
+.info-box.amber { background: #FAEEDA; border-color: #FAC775; color: #854F0B; }
+.info-box.teal { background: #E1F5EE; border-color: #9FE1CB; color: #085041; }
+.check-list { display: flex; flex-direction: column; gap: 14px; }
+.check-item { display: flex; flex-direction: column; gap: 7px; }
+.check-opt { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #1a1a1a; cursor: pointer; }
+.check-opt input[type=checkbox] { width: 15px; height: 15px; accent-color: #185FA5; cursor: pointer; flex-shrink: 0; }
+.upload-slot { display: none; margin-left: 23px; }
+.upload-slot.show { display: flex; flex-direction: column; gap: 4px; }
+.upload-slot .lbl { font-size: 12px; color: #185FA5; }
+.radio-group { display: flex; flex-direction: column; gap: 10px; }
+.radio-card { border: 0.5px solid #ccc; border-radius: 8px; padding: 14px 16px; cursor: pointer; transition: border-color 0.15s; }
+.radio-card:hover { border-color: #185FA5; }
+.radio-card label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.radio-card input[type=radio] { accent-color: #185FA5; width:15px; height:15px; margin-top:2px; }
+.radio-card .rc-title { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+.radio-card .rc-sub { font-size: 12px; color: #666; margin-top: 3px; }
+.radio-card.selected { border-color: #185FA5; background: #E6F1FB; }
+.nav { display: flex; gap: 10px; margin-top: 1rem; }
+.btn { padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: inherit; }
+.btn-primary { background: #185FA5; color: #fff; }
+.btn-primary:hover { background: #0C447C; }
+.btn-back { background: #f0f0ec; color: #1a1a1a; border: 0.5px solid #ccc; }
+.btn-submit { background: #0F6E56; color: #fff; width: 100%; padding: 12px; font-size: 15px; border-radius: 8px; cursor: pointer; border: none; font-family: inherit; font-weight: 500; margin-top: 12px; }
+.btn-submit:hover { background: #085041; }
+.progress-bar { background: #e8e8e4; border-radius: 99px; height: 6px; margin-bottom: 1.25rem; overflow: hidden; }
+.progress-fill { height: 100%; background: #185FA5; border-radius: 99px; transition: width 0.3s; }
+.step-label { font-size: 12px; color: #666; margin-bottom: 6px; }
+.sub-bg { background: #f7f7f4; border-radius: 8px; padding: 1rem; margin-top: 10px; }
+.sub-title { font-size: 12px; font-weight: 500; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+.divider { border: none; border-top: 0.5px solid #e0e0d8; margin: 14px 0; }
+.exp-block { border: 0.5px solid #e0e0d8; border-radius: 8px; padding: 1rem; margin-bottom: 10px; background: #f7f7f4; }
+.done-box { text-align: center; padding: 3rem 1rem; }
+.done-icon { width: 56px; height: 56px; background: #E1F5EE; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+@media(max-width:560px){ .grid2{grid-template-columns:1fr;} .span2{grid-column:span 1;} }
+</style>
+</head>
+<body>
+<div class="fw">
+  <div class="header">
+    <h1>New Staff Onboarding Form</h1>
+    <p>Please complete all sections carefully. Only fields relevant to you will be shown. All fields marked <span style="color:#E24B4A">*</span> are required.</p>
+  </div>
+
+  <div class="step-label" id="step-label">Step 1 of 9</div>
+  <div class="progress-bar"><div class="progress-fill" id="prog" style="width:11%"></div></div>
+
+  <!-- PAGE 0: Residency -->
+  <div class="page active" id="p0">
+    <div class="card">
+      <div class="sec-title">What is your residency status in Singapore?</div>
+      <div class="radio-group">
+        <div class="radio-card" onclick="selectType('sc', this)">
+          <label><input type="radio" name="stype" value="sc">
+            <div><div class="rc-title">Singapore Citizen (SC)</div><div class="rc-sub">Holds a blue NRIC</div></div>
+          </label>
+        </div>
+        <div class="radio-card" onclick="selectType('pr', this)">
+          <label><input type="radio" name="stype" value="pr">
+            <div><div class="rc-title">Singapore Permanent Resident (PR)</div><div class="rc-sub">Holds a pink NRIC / ICA PR approval letter</div></div>
+          </label>
+        </div>
+        <div class="radio-card" onclick="selectType('foreigner', this)">
+          <label><input type="radio" name="stype" value="foreigner">
+            <div><div class="rc-title">Foreigner</div><div class="rc-sub">Non-Singapore citizen / PR — requires work pass application or transfer</div></div>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="nav"><button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button></div>
+  </div>
+
+  <!-- PAGE 1: Personal Particulars -->
+  <div class="page" id="p1">
+    <div class="card">
+      <div class="sec-title">Personal particulars</div>
+      <div class="grid2">
+        <div class="fi span2">
+          <label class="lbl">Full name (as per NRIC / passport) <span class="req">*</span></label>
+          <input type="text" id="f-fullname" placeholder="As printed on your identity document">
+          <span class="err-msg" id="e-fullname">Please enter your full name.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Preferred / English name</label>
+          <input type="text" placeholder="e.g. Jason">
+        </div>
+        <div class="fi">
+          <label class="lbl">Gender <span class="req">*</span></label>
+          <select id="f-gender"><option value="">Select</option><option>Male</option><option>Female</option></select>
+          <span class="err-msg" id="e-gender">Please select your gender.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Date of birth <span class="req">*</span></label>
+          <input type="date" id="f-dob">
+          <span class="err-msg" id="e-dob">Please enter your date of birth.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Nationality <span class="req">*</span></label>
+          <input type="text" id="f-nationality" placeholder="e.g. Singaporean">
+          <span class="err-msg" id="e-nationality">Please enter your nationality.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Race</label>
+          <select><option value="">Select</option><option>Chinese</option><option>Malay</option><option>Indian</option><option>Others</option></select>
+        </div>
+        <div class="fi">
+          <label class="lbl">Religion</label>
+          <select id="religion-sel" onchange="toggleOtherReligion()">
+            <option value="">Select</option><option>Buddhism</option><option>Christian</option><option>Islam</option><option>Hinduism</option><option>Others</option>
+          </select>
+        </div>
+        <div class="fi" id="religion-other-wrap" style="display:none;">
+          <label class="lbl">Please specify religion</label>
+          <input type="text" placeholder="Enter your religion">
+        </div>
+        <div class="fi">
+          <label class="lbl">Marital status <span class="req">*</span></label>
+          <select id="f-marital"><option value="">Select</option><option>Single</option><option>Married</option><option>Divorced</option></select>
+          <span class="err-msg" id="e-marital">Please select your marital status.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Number of children</label>
+          <input type="number" min="0" placeholder="0">
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevPage()">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Identification -->
+  <div class="page" id="p2">
+    <div id="id-sc" style="display:none;">
+      <div class="card">
+        <div class="sec-title">NRIC details</div>
+        <div class="grid2">
+          <div class="fi">
+            <label class="lbl">NRIC number <span class="req">*</span></label>
+            <input type="text" id="f-nric" placeholder="e.g. S1234567A">
+            <span class="err-msg" id="e-nric">Please enter your NRIC number.</span>
+          </div>
+          <div class="fi"><label class="lbl">NRIC issue date</label><input type="date"></div>
+        </div>
+      </div>
+    </div>
+    <div id="id-pr" style="display:none;">
+      <div class="card">
+        <div class="sec-title">NRIC and PR details</div>
+        <div class="grid2">
+          <div class="fi">
+            <label class="lbl">NRIC number <span class="req">*</span></label>
+            <input type="text" id="f-nric-pr" placeholder="e.g. G1234567P">
+            <span class="err-msg" id="e-nric-pr">Please enter your NRIC number.</span>
+          </div>
+          <div class="fi"><label class="lbl">NRIC issue date</label><input type="date"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="sub-bg">
+          <div class="sub-title">Permanent Resident details</div>
+          <div class="grid2">
+            <div class="fi">
+              <label class="lbl">PR status granted date <span class="req">*</span></label>
+              <input type="date" id="f-prdate">
+              <span class="err-msg" id="e-prdate">Please enter your PR granted date.</span>
+              <span class="helper">Date on ICA approval letter</span>
+            </div>
+            <div class="fi">
+              <label class="lbl">Re-entry permit expiry <span class="req">*</span></label>
+              <input type="date" id="f-rep">
+              <span class="err-msg" id="e-rep">Please enter your re-entry permit expiry.</span>
+            </div>
+            <div class="fi">
+              <label class="lbl">Country of birth <span class="req">*</span></label>
+              <input type="text" id="f-cob-pr" placeholder="e.g. Malaysia">
+              <span class="err-msg" id="e-cob-pr">Please enter your country of birth.</span>
+            </div>
+            <div class="fi">
+              <label class="lbl">PR year (for CPF rate) <span class="req">*</span></label>
+              <select id="f-pryear"><option value="">Select</option><option>1st year PR — graduated contribution</option><option>2nd year PR — graduated contribution</option><option>3rd year and beyond — full CPF</option></select>
+              <span class="err-msg" id="e-pryear">Please select your PR year.</span>
+              <span class="helper">Determines your CPF contribution rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="id-foreigner" style="display:none;">
+      <div class="card">
+        <div class="sec-title">Passport details</div>
+        <div class="grid2">
+          <div class="fi">
+            <label class="lbl">Passport number <span class="req">*</span></label>
+            <input type="text" id="f-passport" placeholder="e.g. A12345678">
+            <span class="err-msg" id="e-passport">Please enter your passport number.</span>
+          </div>
+          <div class="fi">
+            <label class="lbl">Passport expiry date <span class="req">*</span></label>
+            <input type="date" id="f-passport-exp">
+            <span class="err-msg" id="e-passport-exp">Please enter your passport expiry.</span>
+            <span class="helper">Must be valid ≥ 6 months from start date</span>
+          </div>
+          <div class="fi">
+            <label class="lbl">Country of birth <span class="req">*</span></label>
+            <input type="text" id="f-cob-fg" placeholder="e.g. Malaysia">
+            <span class="err-msg" id="e-cob-fg">Please enter your country of birth.</span>
+          </div>
+          <div class="fi">
+            <label class="lbl">Place of birth (city) <span class="req">*</span></label>
+            <input type="text" id="f-pob" placeholder="e.g. Kuala Lumpur">
+            <span class="err-msg" id="e-pob">Please enter your place of birth.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec-title">Existing Singapore work pass (if any)</div>
+        <div class="info-box amber">If you do not currently hold any Singapore work pass, leave these blank.</div>
+        <div class="grid2">
+          <div class="fi"><label class="lbl">Current pass type</label><select><option value="">Not applicable</option><option>Employment Pass (EP)</option><option>S Pass</option><option>Work Permit</option><option>Dependent Pass</option><option>LTVP+</option><option>Others</option></select></div>
+          <div class="fi"><label class="lbl">FIN number</label><input type="text" placeholder="e.g. G1234567P"></div>
+          <div class="fi"><label class="lbl">Pass expiry date</label><input type="date"></div>
+          <div class="fi"><label class="lbl">Current / previous employer</label><input type="text" placeholder="Company name"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevPage()">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 3: Education (Foreigner only) -->
+  <div class="page" id="p3">
+    <div class="card">
+      <div class="sec-title">Education qualifications</div>
+      <div class="info-box">Required by MOM to process your work pass application.</div>
+      <div class="grid2">
+        <div class="fi span2">
+          <label class="lbl">Highest qualification <span class="req">*</span></label>
+          <select id="f-qual"><option value="">Select</option><option>PhD / Doctorate</option><option>Master's Degree</option><option>Bachelor's Degree</option><option>Diploma / Advanced Diploma</option><option>Professional Certificate</option><option>GCE A-Level / Pre-University</option><option>GCE O-Level / Secondary</option><option>Primary / Below secondary</option><option>Others</option></select>
+          <span class="err-msg" id="e-qual">Please select your highest qualification.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Field of study <span class="req">*</span></label>
+          <input type="text" id="f-fos" placeholder="e.g. Electrical Engineering">
+          <span class="err-msg" id="e-fos">Please enter your field of study.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Name of institution <span class="req">*</span></label>
+          <input type="text" id="f-inst" placeholder="e.g. University of Malaya">
+          <span class="err-msg" id="e-inst">Please enter your institution name.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Country of institution <span class="req">*</span></label>
+          <input type="text" id="f-instcountry" placeholder="e.g. Malaysia">
+          <span class="err-msg" id="e-instcountry">Please enter the country.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Year of graduation <span class="req">*</span></label>
+          <input type="number" id="f-gradyear" placeholder="e.g. 2018" min="1960" max="2030">
+          <span class="err-msg" id="e-gradyear">Please enter your graduation year.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Course duration (years) <span class="req">*</span></label>
+          <input type="number" id="f-duration" placeholder="e.g. 3" min="1" max="10">
+          <span class="err-msg" id="e-duration">Please enter the course duration.</span>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevPage()">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 4: Work Experience -->
+  <div class="page" id="p4">
+    <div class="card">
+      <div class="sec-title">Work experience</div>
+      <div class="grid2">
+        <div class="fi span2">
+          <label class="lbl">Do you have any work experience? <span class="req">*</span></label>
+          <select id="f-hasexp" onchange="toggleExpSections()">
+            <option value="">Select</option>
+            <option value="no">No — this is my first job</option>
+            <option value="yes">Yes — I have prior work experience</option>
+          </select>
+          <span class="err-msg" id="e-hasexp">Please select an option.</span>
+        </div>
+        <div class="fi span2">
+          <label class="lbl">Job title applying for (this Singapore role) <span class="req">*</span></label>
+          <input type="text" id="f-sgrole" placeholder="e.g. Accounts Executive">
+          <span class="err-msg" id="e-sgrole">Please enter the job title for this role.</span>
+        </div>
+        <div class="fi span2">
+          <label class="lbl">Brief description of expected job duties</label>
+          <textarea placeholder="Optional — describe key responsibilities expected in this role..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div id="exp-none" style="display:none;">
+      <div class="card">
+        <div class="info-box teal">No problem! As a fresh candidate with no prior work experience, you may skip the employer sections. Just continue to the next step.</div>
+      </div>
+    </div>
+
+    <div id="exp-details" style="display:none;">
+      <div class="card">
+        <div class="sec-title">Work experience summary</div>
+        <div class="grid2">
+          <div class="fi">
+            <label class="lbl">Total years of work experience</label>
+            <input type="number" id="f-yrsexp" placeholder="e.g. 5" min="1">
+          </div>
+          <div class="fi">
+            <label class="lbl">Most recent job title</label>
+            <input type="text" id="f-recenttitle" placeholder="e.g. Senior Accountant">
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec-title">Previous latest employer &#8212; Company 1</div>
+        <div class="info-box" style="margin-bottom:12px;">Fill in your most recent employer. All fields below are optional but help us process your application faster.</div>
+        <div class="exp-block">
+          <div class="grid2">
+            <div class="fi span2"><label class="lbl">Company name</label><input type="text" id="f-co1name" placeholder="e.g. ABC Pte Ltd"></div>
+            <div class="fi span2"><label class="lbl">Company address / country</label><input type="text" placeholder="e.g. Kuala Lumpur, Malaysia"></div>
+            <div class="fi"><label class="lbl">Job title held</label><input type="text" id="f-co1title" placeholder="e.g. Finance Executive"></div>
+            <div class="fi"><label class="lbl">Industry / Sector</label><input type="text" placeholder="e.g. Manufacturing"></div>
+            <div class="fi"><label class="lbl">Date joined</label><input type="date" id="f-co1join"></div>
+            <div class="fi"><label class="lbl">Date left</label><input type="date"><span class="helper">Leave blank if this is your current employer</span></div>
+            <div class="fi"><label class="lbl">Monthly salary (SGD or local currency)</label><input type="text" placeholder="e.g. SGD 3,500 or MYR 5,000"></div>
+            <div class="fi"><label class="lbl">Reason for leaving</label><select><option value="">Select</option><option>Better opportunity</option><option>Contract ended</option><option>Retrenchment / redundancy</option><option>Personal reasons</option><option>Relocation</option><option>Others</option></select></div>
+            <div class="fi span2"><label class="lbl">Key responsibilities</label><textarea placeholder="Briefly describe what you did in this role..."></textarea></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec-title">Previous latest employer &#8212; Company 2</div>
+        <div class="info-box" style="margin-bottom:12px;">Leave this section blank if you have only 1 previous employer.</div>
+        <div class="exp-block">
+          <div class="grid2">
+            <div class="fi span2"><label class="lbl">Company name</label><input type="text" placeholder="e.g. XYZ Sdn Bhd"></div>
+            <div class="fi span2"><label class="lbl">Company address / country</label><input type="text" placeholder="e.g. Johor Bahru, Malaysia"></div>
+            <div class="fi"><label class="lbl">Job title held</label><input type="text" placeholder="e.g. Junior Accountant"></div>
+            <div class="fi"><label class="lbl">Industry / Sector</label><input type="text" placeholder="e.g. Retail"></div>
+            <div class="fi"><label class="lbl">Date joined</label><input type="date"></div>
+            <div class="fi"><label class="lbl">Date left</label><input type="date"></div>
+            <div class="fi"><label class="lbl">Monthly salary (SGD or local currency)</label><input type="text" placeholder="e.g. MYR 3,500"></div>
+            <div class="fi"><label class="lbl">Reason for leaving</label><select><option value="">Select</option><option>Better opportunity</option><option>Contract ended</option><option>Retrenchment / redundancy</option><option>Personal reasons</option><option>Relocation</option><option>Others</option></select></div>
+            <div class="fi span2"><label class="lbl">Key responsibilities</label><textarea placeholder="Briefly describe what you did in this role..."></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevPage()">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 5: Contact & Address -->
+  <div class="page" id="p5">
+    <div class="card">
+      <div class="sec-title">Contact details</div>
+      <div class="grid2">
+        <div class="fi">
+          <label class="lbl">Mobile number (Singapore) <span class="req">*</span></label>
+          <input type="tel" id="f-mobile" placeholder="e.g. 9123 4567">
+          <span class="err-msg" id="e-mobile">Please enter your Singapore mobile number.</span>
+        </div>
+        <div class="fi" id="overseas-mobile" style="display:none;">
+          <label class="lbl">Overseas mobile number</label>
+          <input type="tel" placeholder="e.g. +60 12-345 6789">
+        </div>
+        <div class="fi span2">
+          <label class="lbl">Personal email address <span class="req">*</span></label>
+          <input type="email" id="f-email" placeholder="e.g. name@gmail.com">
+          <span class="err-msg" id="e-email">Please enter your email address.</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-title">Singapore residential address</div>
+      <div class="grid2">
+        <div class="fi span2">
+          <label class="lbl">Block and street name <span class="req">*</span></label>
+          <input type="text" id="f-street" placeholder="e.g. Blk 123 Ang Mo Kio Ave 3">
+          <span class="err-msg" id="e-street">Please enter your block and street name.</span>
+        </div>
+        <div class="fi"><label class="lbl">Unit number</label><input type="text" placeholder="e.g. #05-23"></div>
+        <div class="fi">
+          <label class="lbl">Postal code <span class="req">*</span></label>
+          <input type="text" id="f-postal" placeholder="e.g. 560123" maxlength="6">
+          <span class="err-msg" id="e-postal">Please enter your postal code.</span>
+        </div>
+        <div class="fi"><label class="lbl">Type of accommodation</label><select><option value="">Select</option><option>HDB flat</option><option>Private apartment / Condominium</option><option>Landed property</option><option>Service apartment</option><option>Employer-provided dormitory</option><option>Rented room</option><option>Others</option></select></div>
+        <div class="fi"><label class="lbl">Accommodation status</label><select><option value="">Select</option><option>Owner</option><option>Renting</option><option>Living with family</option><option>Employer-provided</option></select></div>
+      </div>
+    </div>
+    <div id="overseas-addr" style="display:none;">
+      <div class="card">
+        <div class="sec-title">Overseas home address</div>
+        <div class="info-box amber">Required for MOM work pass application.</div>
+        <div class="grid1">
+          <div class="fi">
+            <label class="lbl">Block / Street / Unit <span class="req">*</span></label>
+            <input type="text" id="f-ovstreet" placeholder="Address line 1">
+            <span class="err-msg" id="e-ovstreet">Please enter your overseas address.</span>
+          </div>
+          <div class="fi">
+            <label class="lbl">City / State <span class="req">*</span></label>
+            <input type="text" id="f-ovcity" placeholder="e.g. Kuala Lumpur">
+            <span class="err-msg" id="e-ovcity">Please enter your city / state.</span>
+          </div>
+        </div>
+        <div class="grid2" style="margin-top:10px;">
+          <div class="fi"><label class="lbl">Postcode</label><input type="text" placeholder="e.g. 50000"></div>
+          <div class="fi">
+            <label class="lbl">Country <span class="req">*</span></label>
+            <input type="text" id="f-ovcountry" placeholder="e.g. Malaysia">
+            <span class="err-msg" id="e-ovcountry">Please enter your country.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevPage()">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 6: Employment & Salary -->
+  <div class="page" id="p6">
+    <div class="card">
+      <div class="sec-title">Employment details</div>
+      <div class="grid2">
+        <div class="fi">
+          <label class="lbl">Job title / Designation <span class="req">*</span></label>
+          <input type="text" id="f-jobtitle" placeholder="e.g. Accounts Executive">
+          <span class="err-msg" id="e-jobtitle">Please enter the job title.</span>
+        </div>
+        <div class="fi"><label class="lbl">Department</label><input type="text" placeholder="e.g. Finance"></div>
+        <div class="fi">
+          <label class="lbl">Start date <span class="req">*</span></label>
+          <input type="date" id="f-startdate">
+          <span class="err-msg" id="e-startdate">Please enter the start date.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Employment type <span class="req">*</span></label>
+          <select id="f-emptype"><option value="">Select</option><option>Full-time permanent</option><option>Part-time permanent</option><option>Contract</option><option>Temporary</option><option>Internship</option></select>
+          <span class="err-msg" id="e-emptype">Please select the employment type.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Basic monthly salary (SGD) <span class="req">*</span></label>
+          <input type="number" id="f-salary" placeholder="e.g. 3500" min="0">
+          <span class="err-msg" id="e-salary">Please enter the basic monthly salary.</span>
+        </div>
+        <div class="fi"><label class="lbl">Fixed monthly allowances (SGD)</label><input type="number" placeholder="e.g. 200" min="0"></div>
+        <div class="fi"><label class="lbl">Probation period (months)</label><input type="number" placeholder="e.g. 3" min="0"></div>
+        <div class="fi"><label class="lbl">Working arrangement</label><select><option value="">Select</option><option>On-site (office)</option><option>Hybrid</option><option>Work from home</option><option>Field / Site-based</option></select></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-title">CPF and tax</div>
+      <div id="cpf-sc" style="display:none;"><div class="info-box teal">As a Singapore Citizen, full CPF contributions apply. Your CPF account number is the same as your NRIC.</div><div class="grid2"><div class="fi"><label class="lbl">Tax residency</label><select><option>Singapore tax resident</option></select></div><div class="fi"><label class="lbl">Form type</label><select><option>IR8A</option></select></div></div></div>
+      <div id="cpf-pr" style="display:none;"><div class="info-box teal">CPF contribution rate is based on your PR year selected earlier.</div><div class="grid2"><div class="fi"><label class="lbl">Tax residency</label><select><option>Singapore tax resident</option><option>Non-resident</option></select></div><div class="fi"><label class="lbl">Form type</label><select><option>IR8A</option></select></div></div></div>
+      <div id="cpf-foreigner" style="display:none;"><div class="info-box amber">Foreigners are not subject to CPF. IR21 will apply when you cease employment in Singapore.</div><div class="grid2"><div class="fi"><label class="lbl">Tax residency <span class="req">*</span></label><select id="f-taxres"><option value="">Select</option><option>Tax resident (employed ≥ 183 days)</option><option>Non-resident for tax</option></select><span class="err-msg" id="e-taxres">Please select your tax residency.</span></div><div class="fi"><label class="lbl">Form type</label><select><option>IR21 (on departure)</option></select></div></div></div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevPage()">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 7: Bank & Emergency -->
+  <div class="page" id="p7">
+    <div class="card">
+      <div class="sec-title">Bank account for salary</div>
+      <div class="grid2">
+        <div class="fi">
+          <label class="lbl">Bank name <span class="req">*</span></label>
+          <select id="f-bank" onchange="toggleOtherBank()"><option value="">Select bank</option><option>DBS / POSB</option><option>OCBC</option><option>UOB</option><option>Standard Chartered</option><option>Citibank</option><option>Maybank</option><option>HSBC</option><option>Bank of China</option><option>CIMB</option><option>Others</option></select>
+          <span class="err-msg" id="e-bank">Please select your bank.</span>
+        </div>
+        <div class="fi" id="other-bank-wrap" style="display:none;">
+          <label class="lbl">Please specify your bank name <span class="req">*</span></label>
+          <input type="text" id="f-otherbank" placeholder="e.g. RHB Bank, Alliance Bank...">
+          <span class="err-msg" id="e-otherbank">Please enter your bank name.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Account number <span class="req">*</span></label>
+          <input type="text" id="f-accno" placeholder="e.g. 123-456789-0">
+          <span class="err-msg" id="e-accno">Please enter your account number.</span>
+        </div>
+        <div class="fi"><label class="lbl">Account type</label><select><option value="">Select</option><option>Savings</option><option>Current</option></select></div>
+        <div class="fi"><label class="lbl">PayNow (mobile / NRIC / FIN)</label><input type="text" placeholder="Optional"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-title">Emergency contact</div>
+      <div class="grid2">
+        <div class="fi">
+          <label class="lbl">Full name <span class="req">*</span></label>
+          <input type="text" id="f-ecname" placeholder="Contact name">
+          <span class="err-msg" id="e-ecname">Please enter the emergency contact name.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Relationship <span class="req">*</span></label>
+          <select id="f-ecrel"><option value="">Select</option><option>Spouse</option><option>Parent</option><option>Sibling</option><option>Child</option><option>Friend</option><option>Others</option></select>
+          <span class="err-msg" id="e-ecrel">Please select the relationship.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Contact number <span class="req">*</span></label>
+          <input type="tel" id="f-ecno" placeholder="e.g. 9123 4567">
+          <span class="err-msg" id="e-ecno">Please enter the contact number.</span>
+        </div>
+        <div class="fi"><label class="lbl">Alternate number</label><input type="tel" placeholder="Optional"></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevPage()">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="nextPage()">Continue &#8594;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 8: Documents & Declaration -->
+  <div class="page" id="p8">
+    <div class="card">
+      <div class="sec-title">Documents to submit to HR</div>
+      <p style="font-size:13px;color:#666;margin-bottom:4px;">Tick each document and upload the file directly below it.</p>
+      <p style="font-size:12px;color:#999;margin-bottom:16px;">Accepted formats: PDF, JPG, PNG.</p>
+
+      <div id="docs-sc" style="display:none;" class="check-list">
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-sc1',this)"> Copy of NRIC (front and back)</label>
+          <div class="upload-slot" id="u-sc1"><label class="lbl">Upload NRIC copy</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-sc2',this)"> Signed employment contract</label>
+          <div class="upload-slot" id="u-sc2"><label class="lbl">Upload employment contract</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-sc3',this)"> Highest educational certificate</label>
+          <div class="upload-slot" id="u-sc3"><label class="lbl">Upload educational certificate</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-sc4',this)"> Bank account proof (statement / passbook)</label>
+          <div class="upload-slot" id="u-sc4">
+            <p style="font-size:12px;color:#854F0B;background:#FAEEDA;border:0.5px solid #FAC775;border-radius:6px;padding:8px 10px;margin-bottom:6px;line-height:1.6;">
+              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>. A bank statement, passbook front page, or a screenshot from your internet banking account page is acceptable. Make sure all 3 details are visible — blurred or cropped documents will not be accepted.
+            </p>
+            <label class="lbl">Upload bank proof</label>
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-sc5',this)"> CPF / SingPass acknowledgement (if applicable)</label>
+          <div class="upload-slot" id="u-sc5"><label class="lbl">Upload CPF acknowledgement</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+      </div>
+
+      <div id="docs-pr" style="display:none;" class="check-list">
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-pr1',this)"> Copy of NRIC (front and back)</label>
+          <div class="upload-slot" id="u-pr1"><label class="lbl">Upload NRIC copy</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-pr2',this)"> ICA PR approval letter</label>
+          <div class="upload-slot" id="u-pr2"><label class="lbl">Upload PR approval letter</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-pr3',this)"> Re-entry permit (REP)</label>
+          <div class="upload-slot" id="u-pr3"><label class="lbl">Upload re-entry permit</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-pr4',this)"> Signed employment contract</label>
+          <div class="upload-slot" id="u-pr4"><label class="lbl">Upload employment contract</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-pr5',this)"> Highest educational certificate</label>
+          <div class="upload-slot" id="u-pr5"><label class="lbl">Upload educational certificate</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-pr6',this)"> Bank account proof</label>
+          <div class="upload-slot" id="u-pr6">
+            <p style="font-size:12px;color:#854F0B;background:#FAEEDA;border:0.5px solid #FAC775;border-radius:6px;padding:8px 10px;margin-bottom:6px;line-height:1.6;">
+              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>. A bank statement, passbook front page, or a screenshot from your internet banking account page is acceptable. Make sure all 3 details are visible — blurred or cropped documents will not be accepted.
+            </p>
+            <label class="lbl">Upload bank proof</label>
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </div>
+        </div>
+      </div>
+
+      <div id="docs-foreigner" style="display:none;" class="check-list">
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg1',this)"> Passport copy (all pages — colour)</label>
+          <div class="upload-slot" id="u-fg1"><label class="lbl">Upload passport copy</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg2',this)"> Degree / Diploma certificate</label>
+          <div class="upload-slot" id="u-fg2"><label class="lbl">Upload degree / diploma</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg3',this)"> Official academic transcript</label>
+          <div class="upload-slot" id="u-fg3"><label class="lbl">Upload academic transcript</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg4',this)"> Proof of past employment (letters / payslips)</label>
+          <div class="upload-slot" id="u-fg4"><label class="lbl">Upload employment proof</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg5',this)"> Signed employment contract</label>
+          <div class="upload-slot" id="u-fg5"><label class="lbl">Upload employment contract</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg6',this)"> Bank account proof</label>
+          <div class="upload-slot" id="u-fg6">
+            <p style="font-size:12px;color:#854F0B;background:#FAEEDA;border:0.5px solid #FAC775;border-radius:6px;padding:8px 10px;margin-bottom:6px;line-height:1.6;">
+              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>. A bank statement, passbook front page, or a screenshot from your internet banking account page is acceptable. Make sure all 3 details are visible — blurred or cropped documents will not be accepted.
+            </p>
+            <label class="lbl">Upload bank proof</label>
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png">
+          </div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg7',this)"> Recent passport-size photo (white background)</label>
+          <div class="upload-slot" id="u-fg7"><label class="lbl">Upload passport photo</label><input type="file" accept=".jpg,.jpeg,.png"></div>
+        </div>
+        <div class="check-item">
+          <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg8',this)"> Existing work pass copy (if applicable)</label>
+          <div class="upload-slot" id="u-fg8"><label class="lbl">Upload work pass copy</label><input type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Declaration</div>
+      <div class="info-box" style="margin-bottom:14px;">I confirm that all information provided is true, accurate, and complete. Any false declaration may result in disciplinary action or termination of employment.</div>
+      <div class="grid2">
+        <div class="fi">
+          <label class="lbl">Full name (as signature) <span class="req">*</span></label>
+          <input type="text" id="f-declname" placeholder="Type your full name">
+          <span class="err-msg" id="e-declname">Please sign with your full name.</span>
+        </div>
+        <div class="fi">
+          <label class="lbl">Date <span class="req">*</span></label>
+          <input type="date" id="f-decldate">
+          <span class="err-msg" id="e-decldate">Please enter today's date.</span>
+        </div>
+        <div class="fi span2"><label class="lbl">Additional remarks to HR</label><textarea placeholder="Anything else you would like HR to know..."></textarea></div>
+      </div>
+    </div>
+    <div class="nav"><button class="btn btn-back" onclick="prevPage()">&#8592; Back</button></div>
+    <button class="btn-submit" onclick="submitForm()">Submit onboarding form</button>
+  </div>
+
+  <!-- PAGE 9: Done -->
+  <div class="page" id="p9">
+    <div class="card">
+      <div class="done-box">
+        <div class="done-icon">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="13" stroke="#0F6E56" stroke-width="1.5"/>
+            <path d="M8 14.5l4 4 8-9" stroke="#0F6E56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p style="font-size:18px;font-weight:500;color:#1a1a1a;margin-bottom:8px;">Form submitted successfully</p>
+        <p style="font-size:14px;color:#666;line-height:1.7;">Thank you. HR will review your information and be in touch if anything else is needed. Please bring all physical documents on your first day.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let staffType = '';
+let currentPage = 0;
+const scPages = [0,1,2,4,5,6,7,8,9];
+const fgPages = [0,1,2,3,4,5,6,7,8,9];
+
+function getPages() { return staffType === 'foreigner' ? fgPages : scPages; }
+
+function selectType(type, el) {
+  staffType = type;
+  document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleOtherReligion() {
+  const sel = document.getElementById('religion-sel');
+  document.getElementById('religion-other-wrap').style.display = sel.value === 'Others' ? 'flex' : 'none';
+}
+
+function toggleOtherBank() {
+  const sel = document.getElementById('f-bank');
+  const wrap = document.getElementById('other-bank-wrap');
+  wrap.style.display = sel.value === 'Others' ? 'block' : 'none';
+  if (sel.value !== 'Others') {
+    const inp = document.getElementById('f-otherbank');
+    inp.value = '';
+    inp.classList.remove('error');
+    document.getElementById('e-otherbank').classList.remove('show');
+  }
+}
+
+function toggleExpSections() {
+  const val = document.getElementById('f-hasexp').value;
+  document.getElementById('exp-none').style.display = val === 'no' ? 'block' : 'none';
+  document.getElementById('exp-details').style.display = val === 'yes' ? 'block' : 'none';
+}
+
+function toggleUpload(slotId, cb) {
+  const slot = document.getElementById(slotId);
+  if (slot) slot.classList.toggle('show', cb.checked);
+}
+
+function applyTypeUI() {
+  const isSC = staffType === 'sc';
+  const isPR = staffType === 'pr';
+  const isFG = staffType === 'foreigner';
+  document.getElementById('id-sc').style.display = isSC ? 'block' : 'none';
+  document.getElementById('id-pr').style.display = isPR ? 'block' : 'none';
+  document.getElementById('id-foreigner').style.display = isFG ? 'block' : 'none';
+  document.getElementById('cpf-sc').style.display = isSC ? 'block' : 'none';
+  document.getElementById('cpf-pr').style.display = isPR ? 'block' : 'none';
+  document.getElementById('cpf-foreigner').style.display = isFG ? 'block' : 'none';
+  document.getElementById('docs-sc').style.display = isSC ? 'block' : 'none';
+  document.getElementById('docs-pr').style.display = isPR ? 'block' : 'none';
+  document.getElementById('docs-foreigner').style.display = isFG ? 'block' : 'none';
+  document.getElementById('overseas-mobile').style.display = isFG ? 'flex' : 'none';
+  document.getElementById('overseas-addr').style.display = isFG ? 'block' : 'none';
+  document.getElementById('f-nationality').placeholder = isSC ? 'Singaporean' : isFG ? 'e.g. Malaysian, Indian, Filipino' : 'e.g. Malaysian';
+}
+
+function chk(id, errId) {
+  const el = document.getElementById(id);
+  if (!el || el.offsetParent === null) return true; // skip hidden fields
+  const val = el.value.trim();
+  const invalid = (el.tagName === 'SELECT') ? val === '' : val === '';
+  const errEl = document.getElementById(errId);
+  if (invalid) {
+    el.classList.add('error');
+    if (errEl) errEl.classList.add('show');
+    el.addEventListener('input', function h() { el.classList.remove('error'); if(errEl) errEl.classList.remove('show'); el.removeEventListener('input',h); });
+    el.addEventListener('change', function h() { el.classList.remove('error'); if(errEl) errEl.classList.remove('show'); el.removeEventListener('change',h); });
+    return false;
+  }
+  el.classList.remove('error');
+  if (errEl) errEl.classList.remove('show');
+  return true;
+}
+
+function validatePage(page) {
+  let ok = true;
+  if (page === 1) {
+    ok = chk('f-fullname','e-fullname') & ok;
+    ok = chk('f-gender','e-gender') & ok;
+    ok = chk('f-dob','e-dob') & ok;
+    ok = chk('f-nationality','e-nationality') & ok;
+    ok = chk('f-marital','e-marital') & ok;
+  }
+  if (page === 2) {
+    if (staffType === 'sc') ok = chk('f-nric','e-nric') & ok;
+    if (staffType === 'pr') {
+      ok = chk('f-nric-pr','e-nric-pr') & ok;
+      ok = chk('f-prdate','e-prdate') & ok;
+      ok = chk('f-rep','e-rep') & ok;
+      ok = chk('f-cob-pr','e-cob-pr') & ok;
+      ok = chk('f-pryear','e-pryear') & ok;
+    }
+    if (staffType === 'foreigner') {
+      ok = chk('f-passport','e-passport') & ok;
+      ok = chk('f-passport-exp','e-passport-exp') & ok;
+      ok = chk('f-cob-fg','e-cob-fg') & ok;
+      ok = chk('f-pob','e-pob') & ok;
+    }
+  }
+  if (page === 3) {
+    ok = chk('f-qual','e-qual') & ok;
+    ok = chk('f-fos','e-fos') & ok;
+    ok = chk('f-inst','e-inst') & ok;
+    ok = chk('f-instcountry','e-instcountry') & ok;
+    ok = chk('f-gradyear','e-gradyear') & ok;
+    ok = chk('f-duration','e-duration') & ok;
+  }
+  if (page === 4) {
+    ok = chk('f-hasexp','e-hasexp') & ok;
+    ok = chk('f-sgrole','e-sgrole') & ok;
+  }
+  if (page === 5) {
+    ok = chk('f-mobile','e-mobile') & ok;
+    ok = chk('f-email','e-email') & ok;
+    ok = chk('f-street','e-street') & ok;
+    ok = chk('f-postal','e-postal') & ok;
+    if (staffType === 'foreigner') {
+      ok = chk('f-ovstreet','e-ovstreet') & ok;
+      ok = chk('f-ovcity','e-ovcity') & ok;
+      ok = chk('f-ovcountry','e-ovcountry') & ok;
+    }
+  }
+  if (page === 6) {
+    ok = chk('f-jobtitle','e-jobtitle') & ok;
+    ok = chk('f-startdate','e-startdate') & ok;
+    ok = chk('f-emptype','e-emptype') & ok;
+    ok = chk('f-salary','e-salary') & ok;
+    if (staffType === 'foreigner') ok = chk('f-taxres','e-taxres') & ok;
+  }
+  if (page === 7) {
+    ok = chk('f-bank','e-bank') & ok;
+    if (document.getElementById('f-bank').value === 'Others') {
+      ok = chk('f-otherbank','e-otherbank') & ok;
+    }
+    ok = chk('f-accno','e-accno') & ok;
+    ok = chk('f-ecname','e-ecname') & ok;
+    ok = chk('f-ecrel','e-ecrel') & ok;
+    ok = chk('f-ecno','e-ecno') & ok;
+  }
+  if (page === 8) {
+    ok = chk('f-declname','e-declname') & ok;
+    ok = chk('f-decldate','e-decldate') & ok;
+  }
+  if (!ok) {
+    const firstErr = document.querySelector('.error');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return !!ok;
+}
+
+function updateProgress() {
+  const pages = getPages();
+  const idx = pages.indexOf(currentPage);
+  const total = pages.length - 1;
+  const pct = Math.round((idx / total) * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('step-label').textContent = 'Step ' + (idx + 1) + ' of ' + total;
+}
+
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('p' + p);
+  if (el) el.classList.add('active');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextPage() {
+  if (currentPage === 0) {
+    if (!staffType) { alert('Please select your residency status to continue.'); return; }
+    applyTypeUI();
+  }
+  if (!validatePage(currentPage)) return;
+  const pages = getPages();
+  const idx = pages.indexOf(currentPage);
+  if (idx < pages.length - 1) { currentPage = pages[idx + 1]; showPage(currentPage); }
+}
+
+function prevPage() {
+  const pages = getPages();
+  const idx = pages.indexOf(currentPage);
+  if (idx > 0) { currentPage = pages[idx - 1]; showPage(currentPage); }
+}
+
+// ── IMPORTANT: Paste your Web App URL here after deploying ──
+var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxDHxgkZyYSFaHoVD6MFogYs8zZ8ASKSrk1W07nO_Ab-EGmwbJwZs_ZhLsXVKCzXYHU/exec';
+
+function getVal(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function getChecked(selector) {
+  var checked = [];
+  document.querySelectorAll(selector + ':checked').forEach(function(cb) {
+    checked.push(cb.closest('.check-opt').textContent.trim());
+  });
+  return checked;
+}
+
+async function fileToBase64(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var base64 = reader.result.split(',')[1];
+      resolve({ name: file.name, content: base64, mimeType: file.type });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function collectFiles() {
+  var files = [];
+  var fileInputs = document.querySelectorAll('.upload-slot.show input[type=file]');
+  for (var i = 0; i < fileInputs.length; i++) {
+    var input = fileInputs[i];
+    if (input.files && input.files.length > 0) {
+      for (var j = 0; j < input.files.length; j++) {
+        var fileData = await fileToBase64(input.files[j]);
+        files.push(fileData);
+      }
+    }
+  }
+  return files;
+}
+
+async function submitForm() {
+  if (!validatePage(8)) return;
+
+  // Show submitting state
+  var btn = document.querySelector('.btn-submit');
+  btn.textContent = 'Submitting... please wait';
+  btn.disabled = true;
+  btn.style.background = '#999';
+
+  try {
+    // Collect all files
+    var files = await collectFiles();
+
+    // Collect all form data
+    var data = {
+      // Personal
+      residencyStatus: staffType === 'sc' ? 'Singapore Citizen (SC)' : staffType === 'pr' ? 'Singapore Permanent Resident (PR)' : 'Foreigner',
+      fullName: getVal('f-fullname'),
+      preferredName: document.querySelector('input[placeholder="e.g. Jason"]') ? document.querySelector('input[placeholder="e.g. Jason"]').value : '',
+      gender: getVal('f-gender'),
+      dob: getVal('f-dob'),
+      nationality: getVal('f-nationality'),
+      race: document.querySelector('select[id^=""]') ? '' : '',
+      religion: getVal('religion-sel'),
+      religionOther: getVal('religion-other-wrap') ? document.querySelector('#religion-other-wrap input') ? document.querySelector('#religion-other-wrap input').value : '' : '',
+      maritalStatus: getVal('f-marital'),
+      numChildren: document.querySelector('input[placeholder="0"]') ? document.querySelector('input[placeholder="0"]').value : '',
+      // Identification
+      nric: getVal('f-nric') || getVal('f-nric-pr'),
+      nricIssueDate: '',
+      prDate: getVal('f-prdate'),
+      repExpiry: getVal('f-rep'),
+      countryOfBirth: getVal('f-cob-pr') || getVal('f-cob-fg'),
+      prYear: getVal('f-pryear'),
+      passportNo: getVal('f-passport'),
+      passportExpiry: getVal('f-passport-exp'),
+      placeOfBirth: getVal('f-pob'),
+      currentPassType: '',
+      finNo: '',
+      passExpiry: '',
+      currentEmployer: '',
+      // Education (foreigner)
+      highestQual: getVal('f-qual'),
+      fieldOfStudy: getVal('f-fos'),
+      institution: getVal('f-inst'),
+      institutionCountry: getVal('f-instcountry'),
+      gradYear: getVal('f-gradyear'),
+      courseDuration: getVal('f-duration'),
+      // Overseas address
+      overseasStreet: getVal('f-ovstreet'),
+      overseasCity: getVal('f-ovcity'),
+      overseasPostcode: '',
+      overseasCountry: getVal('f-ovcountry'),
+      // Work experience
+      hasExp: getVal('f-hasexp'),
+      sgRole: getVal('f-sgrole'),
+      jobDuties: '',
+      yrsExp: getVal('f-yrsexp'),
+      recentTitle: getVal('f-recenttitle'),
+      co1Name: getVal('f-co1name'),
+      co1Address: '',
+      co1Title: getVal('f-co1title'),
+      co1Industry: '',
+      co1Join: getVal('f-co1join'),
+      co1Left: '',
+      co1Salary: '',
+      co1Reason: '',
+      co1Resp: '',
+      co2Name: '',
+      co2Address: '',
+      co2Title: '',
+      co2Industry: '',
+      co2Join: '',
+      co2Left: '',
+      co2Salary: '',
+      co2Reason: '',
+      co2Resp: '',
+      // Contact
+      sgMobile: getVal('f-mobile'),
+      overseasMobile: '',
+      personalEmail: getVal('f-email'),
+      sgStreet: getVal('f-street'),
+      unitNo: '',
+      postalCode: getVal('f-postal'),
+      accomType: '',
+      accomStatus: '',
+      // Employment
+      jobTitle: getVal('f-jobtitle'),
+      department: '',
+      startDate: getVal('f-startdate'),
+      empType: getVal('f-emptype'),
+      salary: getVal('f-salary'),
+      allowances: '',
+      probation: '',
+      workArrange: '',
+      taxResidency: getVal('f-taxres'),
+      // Bank
+      bankName: getVal('f-bank'),
+      otherBank: getVal('f-otherbank'),
+      accNo: getVal('f-accno'),
+      accType: '',
+      paynow: '',
+      // Emergency
+      ecName: getVal('f-ecname'),
+      ecRel: getVal('f-ecrel'),
+      ecNo: getVal('f-ecno'),
+      ecAlt: '',
+      // Documents
+      documents: getChecked('.check-list input[type=checkbox]'),
+      // Declaration
+      declName: getVal('f-declname'),
+      declDate: getVal('f-decldate'),
+      remarks: '',
+      // Files
+      files: files
+    };
+
+    // Check if Web App URL is configured
+    if (WEB_APP_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
+      alert('Web App URL not configured yet. Please follow setup instructions to deploy the Apps Script and paste the URL.');
+      btn.textContent = 'Submit onboarding form';
+      btn.disabled = false;
+      btn.style.background = '#0F6E56';
+      return;
+    }
+
+    // Submit to Google Apps Script Web App
+    var response = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+
+    var result = await response.json();
+
+    if (result.status === 'success') {
+      // Show success page
+      currentPage = 9;
+      document.querySelectorAll('.page').forEach(function(el) { el.classList.remove('active'); });
+      document.getElementById('p9').classList.add('active');
+      document.getElementById('prog').style.width = '100%';
+      document.getElementById('step-label').textContent = 'Completed';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      throw new Error(result.message || 'Submission failed');
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert('There was an error submitting the form. Please check your internet connection and try again.\n\nError: ' + err.message);
+    btn.textContent = 'Submit onboarding form';
+    btn.disabled = false;
+    btn.style.background = '#0F6E56';
+  }
+}
+</script>
+</body>
+</html>
