@@ -121,7 +121,7 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
         <div class="fi">
           <label class="lbl">Preferred / English name</label>
-          <input type="text" placeholder="e.g. Jason">
+          <input type="text" id="f-prefname" placeholder="e.g. Jason">
         </div>
         <div class="fi">
           <label class="lbl">Gender <span class="req">*</span></label>
@@ -140,7 +140,7 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
         <div class="fi">
           <label class="lbl">Race</label>
-          <select><option value="">Select</option><option>Chinese</option><option>Malay</option><option>Indian</option><option>Others</option></select>
+          <select id="f-race"><option value="">Select</option><option>Chinese</option><option>Malay</option><option>Indian</option><option>Others</option></select>
         </div>
         <div class="fi">
           <label class="lbl">Religion</label>
@@ -150,7 +150,7 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
         <div class="fi" id="religion-other-wrap" style="display:none;">
           <label class="lbl">Please specify religion</label>
-          <input type="text" placeholder="Enter your religion">
+          <input type="text" id="f-religion-other" placeholder="Enter your religion">
         </div>
         <div class="fi">
           <label class="lbl">Marital status <span class="req">*</span></label>
@@ -159,7 +159,7 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
         <div class="fi">
           <label class="lbl">Number of children</label>
-          <input type="number" min="0" placeholder="0">
+          <input type="number" id="f-children" min="0" placeholder="0">
         </div>
       </div>
     </div>
@@ -180,7 +180,7 @@ textarea { resize: vertical; min-height: 72px; }
             <input type="text" id="f-nric" placeholder="e.g. S1234567A">
             <span class="err-msg" id="e-nric">Please enter your NRIC number.</span>
           </div>
-          <div class="fi"><label class="lbl">NRIC issue date</label><input type="date"></div>
+          <div class="fi"><label class="lbl">NRIC issue date</label><input type="date" id="f-nric-issue-sc"></div>
         </div>
       </div>
     </div>
@@ -193,7 +193,7 @@ textarea { resize: vertical; min-height: 72px; }
             <input type="text" id="f-nric-pr" placeholder="e.g. G1234567P">
             <span class="err-msg" id="e-nric-pr">Please enter your NRIC number.</span>
           </div>
-          <div class="fi"><label class="lbl">NRIC issue date</label><input type="date"></div>
+          <div class="fi"><label class="lbl">NRIC issue date</label><input type="date" id="f-nric-issue-pr"></div>
         </div>
         <div class="divider"></div>
         <div class="sub-bg">
@@ -256,10 +256,10 @@ textarea { resize: vertical; min-height: 72px; }
         <div class="sec-title">Existing Singapore work pass (if any)</div>
         <div class="info-box amber">If you do not currently hold any Singapore work pass, leave these blank.</div>
         <div class="grid2">
-          <div class="fi"><label class="lbl">Current pass type</label><select><option value="">Not applicable</option><option>Employment Pass (EP)</option><option>S Pass</option><option>Work Permit</option><option>Dependent Pass</option><option>LTVP+</option><option>Others</option></select></div>
-          <div class="fi"><label class="lbl">FIN number</label><input type="text" placeholder="e.g. G1234567P"></div>
-          <div class="fi"><label class="lbl">Pass expiry date</label><input type="date"></div>
-          <div class="fi"><label class="lbl">Current / previous employer</label><input type="text" placeholder="Company name"></div>
+          <div class="fi"><label class="lbl">Current pass type</label><select id="f-passtype"><option value="">Not applicable</option><option>Employment Pass (EP)</option><option>S Pass</option><option>Work Permit</option><option>Dependent Pass</option><option>LTVP+</option><option>Others</option></select></div>
+          <div class="fi"><label class="lbl">FIN number</label><input type="text" id="f-fin" placeholder="e.g. G1234567P"></div>
+          <div class="fi"><label class="lbl">Pass expiry date</label><input type="date" id="f-passexpiry"></div>
+          <div class="fi"><label class="lbl">Current / previous employer</label><input type="text" id="f-currentemployer" placeholder="Company name"></div>
         </div>
       </div>
     </div>
@@ -334,7 +334,7 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
         <div class="fi span2">
           <label class="lbl">Brief description of expected job duties</label>
-          <textarea placeholder="Optional — describe key responsibilities expected in this role..."></textarea>
+          <textarea id="f-jobduties" placeholder="Optional — describe key responsibilities expected in this role..."></textarea>
         </div>
       </div>
     </div>
@@ -365,14 +365,14 @@ textarea { resize: vertical; min-height: 72px; }
         <div class="exp-block">
           <div class="grid2">
             <div class="fi span2"><label class="lbl">Company name</label><input type="text" id="f-co1name" placeholder="e.g. ABC Pte Ltd"></div>
-            <div class="fi span2"><label class="lbl">Company address / country</label><input type="text" placeholder="e.g. Kuala Lumpur, Malaysia"></div>
+            <div class="fi span2"><label class="lbl">Company address / country</label><input type="text" id="f-co1address" placeholder="e.g. Kuala Lumpur, Malaysia"></div>
             <div class="fi"><label class="lbl">Job title held</label><input type="text" id="f-co1title" placeholder="e.g. Finance Executive"></div>
-            <div class="fi"><label class="lbl">Industry / Sector</label><input type="text" placeholder="e.g. Manufacturing"></div>
+            <div class="fi"><label class="lbl">Industry / Sector</label><input type="text" id="f-co1industry" placeholder="e.g. Manufacturing"></div>
             <div class="fi"><label class="lbl">Date joined</label><input type="date" id="f-co1join"></div>
-            <div class="fi"><label class="lbl">Date left</label><input type="date"><span class="helper">Leave blank if this is your current employer</span></div>
-            <div class="fi"><label class="lbl">Monthly salary (SGD or local currency)</label><input type="text" placeholder="e.g. SGD 3,500 or MYR 5,000"></div>
-            <div class="fi"><label class="lbl">Reason for leaving</label><select><option value="">Select</option><option>Better opportunity</option><option>Contract ended</option><option>Retrenchment / redundancy</option><option>Personal reasons</option><option>Relocation</option><option>Others</option></select></div>
-            <div class="fi span2"><label class="lbl">Key responsibilities</label><textarea placeholder="Briefly describe what you did in this role..."></textarea></div>
+            <div class="fi"><label class="lbl">Date left</label><input type="date" id="f-co1left"><span class="helper">Leave blank if this is your current employer</span></div>
+            <div class="fi"><label class="lbl">Monthly salary (SGD or local currency)</label><input type="text" id="f-co1salary" placeholder="e.g. SGD 3,500 or MYR 5,000"></div>
+            <div class="fi"><label class="lbl">Reason for leaving</label><select id="f-co1reason"><option value="">Select</option><option>Better opportunity</option><option>Contract ended</option><option>Retrenchment / redundancy</option><option>Personal reasons</option><option>Relocation</option><option>Others</option></select></div>
+            <div class="fi span2"><label class="lbl">Key responsibilities</label><textarea id="f-co1resp" placeholder="Briefly describe what you did in this role..."></textarea></div>
           </div>
         </div>
       </div>
@@ -381,15 +381,15 @@ textarea { resize: vertical; min-height: 72px; }
         <div class="info-box" style="margin-bottom:12px;">Leave this section blank if you have only 1 previous employer.</div>
         <div class="exp-block">
           <div class="grid2">
-            <div class="fi span2"><label class="lbl">Company name</label><input type="text" placeholder="e.g. XYZ Sdn Bhd"></div>
-            <div class="fi span2"><label class="lbl">Company address / country</label><input type="text" placeholder="e.g. Johor Bahru, Malaysia"></div>
-            <div class="fi"><label class="lbl">Job title held</label><input type="text" placeholder="e.g. Junior Accountant"></div>
-            <div class="fi"><label class="lbl">Industry / Sector</label><input type="text" placeholder="e.g. Retail"></div>
-            <div class="fi"><label class="lbl">Date joined</label><input type="date"></div>
-            <div class="fi"><label class="lbl">Date left</label><input type="date"></div>
-            <div class="fi"><label class="lbl">Monthly salary (SGD or local currency)</label><input type="text" placeholder="e.g. MYR 3,500"></div>
-            <div class="fi"><label class="lbl">Reason for leaving</label><select><option value="">Select</option><option>Better opportunity</option><option>Contract ended</option><option>Retrenchment / redundancy</option><option>Personal reasons</option><option>Relocation</option><option>Others</option></select></div>
-            <div class="fi span2"><label class="lbl">Key responsibilities</label><textarea placeholder="Briefly describe what you did in this role..."></textarea></div>
+            <div class="fi span2"><label class="lbl">Company name</label><input type="text" id="f-co2name" placeholder="e.g. XYZ Sdn Bhd"></div>
+            <div class="fi span2"><label class="lbl">Company address / country</label><input type="text" id="f-co2address" placeholder="e.g. Johor Bahru, Malaysia"></div>
+            <div class="fi"><label class="lbl">Job title held</label><input type="text" id="f-co2title" placeholder="e.g. Junior Accountant"></div>
+            <div class="fi"><label class="lbl">Industry / Sector</label><input type="text" id="f-co2industry" placeholder="e.g. Retail"></div>
+            <div class="fi"><label class="lbl">Date joined</label><input type="date" id="f-co2join"></div>
+            <div class="fi"><label class="lbl">Date left</label><input type="date" id="f-co2left"></div>
+            <div class="fi"><label class="lbl">Monthly salary (SGD or local currency)</label><input type="text" id="f-co2salary" placeholder="e.g. MYR 3,500"></div>
+            <div class="fi"><label class="lbl">Reason for leaving</label><select id="f-co2reason"><option value="">Select</option><option>Better opportunity</option><option>Contract ended</option><option>Retrenchment / redundancy</option><option>Personal reasons</option><option>Relocation</option><option>Others</option></select></div>
+            <div class="fi span2"><label class="lbl">Key responsibilities</label><textarea id="f-co2resp" placeholder="Briefly describe what you did in this role..."></textarea></div>
           </div>
         </div>
       </div>
@@ -413,7 +413,7 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
         <div class="fi" id="overseas-mobile" style="display:none;">
           <label class="lbl">Overseas mobile number</label>
-          <input type="tel" placeholder="e.g. +60 12-345 6789">
+          <input type="tel" id="f-overseaphone" placeholder="e.g. +60 12-345 6789">
         </div>
         <div class="fi span2">
           <label class="lbl">Personal email address <span class="req">*</span></label>
@@ -430,14 +430,14 @@ textarea { resize: vertical; min-height: 72px; }
           <input type="text" id="f-street" placeholder="e.g. Blk 123 Ang Mo Kio Ave 3">
           <span class="err-msg" id="e-street">Please enter your block and street name.</span>
         </div>
-        <div class="fi"><label class="lbl">Unit number</label><input type="text" placeholder="e.g. #05-23"></div>
+        <div class="fi"><label class="lbl">Unit number</label><input type="text" id="f-unitno" placeholder="e.g. #05-23"></div>
         <div class="fi">
           <label class="lbl">Postal code <span class="req">*</span></label>
           <input type="text" id="f-postal" placeholder="e.g. 560123" maxlength="6">
           <span class="err-msg" id="e-postal">Please enter your postal code.</span>
         </div>
-        <div class="fi"><label class="lbl">Type of accommodation</label><select><option value="">Select</option><option>HDB flat</option><option>Private apartment / Condominium</option><option>Landed property</option><option>Service apartment</option><option>Employer-provided dormitory</option><option>Rented room</option><option>Others</option></select></div>
-        <div class="fi"><label class="lbl">Accommodation status</label><select><option value="">Select</option><option>Owner</option><option>Renting</option><option>Living with family</option><option>Employer-provided</option></select></div>
+        <div class="fi"><label class="lbl">Type of accommodation</label><select id="f-accomtype"><option value="">Select</option><option>HDB flat</option><option>Private apartment / Condominium</option><option>Landed property</option><option>Service apartment</option><option>Employer-provided dormitory</option><option>Rented room</option><option>Others</option></select></div>
+        <div class="fi"><label class="lbl">Accommodation status</label><select id="f-accomstatus"><option value="">Select</option><option>Owner</option><option>Renting</option><option>Living with family</option><option>Employer-provided</option></select></div>
       </div>
     </div>
     <div id="overseas-addr" style="display:none;">
@@ -457,7 +457,7 @@ textarea { resize: vertical; min-height: 72px; }
           </div>
         </div>
         <div class="grid2" style="margin-top:10px;">
-          <div class="fi"><label class="lbl">Postcode</label><input type="text" placeholder="e.g. 50000"></div>
+          <div class="fi"><label class="lbl">Postcode</label><input type="text" id="f-ovpostcode" placeholder="e.g. 50000"></div>
           <div class="fi">
             <label class="lbl">Country <span class="req">*</span></label>
             <input type="text" id="f-ovcountry" placeholder="e.g. Malaysia">
@@ -482,7 +482,7 @@ textarea { resize: vertical; min-height: 72px; }
           <input type="text" id="f-jobtitle" placeholder="e.g. Accounts Executive">
           <span class="err-msg" id="e-jobtitle">Please enter the job title.</span>
         </div>
-        <div class="fi"><label class="lbl">Department</label><input type="text" placeholder="e.g. Finance"></div>
+        <div class="fi"><label class="lbl">Department</label><input type="text" id="f-department" placeholder="e.g. Finance"></div>
         <div class="fi">
           <label class="lbl">Start date <span class="req">*</span></label>
           <input type="date" id="f-startdate">
@@ -500,9 +500,9 @@ textarea { resize: vertical; min-height: 72px; }
           </div>
           <input type="number" id="f-salary" placeholder="Refer to your employment contract" min="0">
         </div>
-        <div class="fi"><label class="lbl">Fixed monthly allowances (SGD)</label><input type="number" placeholder="e.g. 200" min="0"></div>
-        <div class="fi"><label class="lbl">Probation period (months)</label><input type="number" placeholder="e.g. 3" min="0"></div>
-        <div class="fi"><label class="lbl">Working arrangement</label><select><option value="">Select</option><option>On-site (office)</option><option>Hybrid</option><option>Work from home</option><option>Field / Site-based</option></select></div>
+        <div class="fi"><label class="lbl">Fixed monthly allowances (SGD)</label><input type="number" id="f-allowances" placeholder="e.g. 200" min="0"></div>
+        <div class="fi"><label class="lbl">Probation period (months)</label><input type="number" id="f-probation" placeholder="e.g. 3" min="0"></div>
+        <div class="fi"><label class="lbl">Working arrangement</label><select id="f-workarrange"><option value="">Select</option><option>On-site (office)</option><option>Hybrid</option><option>Work from home</option><option>Field / Site-based</option></select></div>
       </div>
     </div>
     <div class="card">
@@ -537,8 +537,8 @@ textarea { resize: vertical; min-height: 72px; }
           <input type="text" id="f-accno" placeholder="e.g. 123-456789-0">
           <span class="err-msg" id="e-accno">Please enter your account number.</span>
         </div>
-        <div class="fi"><label class="lbl">Account type</label><select><option value="">Select</option><option>Savings</option><option>Current</option></select></div>
-        <div class="fi"><label class="lbl">PayNow (mobile / NRIC / FIN)</label><input type="text" placeholder="Optional"></div>
+        <div class="fi"><label class="lbl">Account type</label><select id="f-acctype"><option value="">Select</option><option>Savings</option><option>Current</option></select></div>
+        <div class="fi"><label class="lbl">PayNow (mobile / NRIC / FIN)</label><input type="text" id="f-paynow" placeholder="Optional"></div>
       </div>
     </div>
     <div class="card">
@@ -559,7 +559,7 @@ textarea { resize: vertical; min-height: 72px; }
           <input type="tel" id="f-ecno" placeholder="e.g. 9123 4567">
           <span class="err-msg" id="e-ecno">Please enter the contact number.</span>
         </div>
-        <div class="fi"><label class="lbl">Alternate number</label><input type="tel" placeholder="Optional"></div>
+        <div class="fi"><label class="lbl">Alternate number</label><input type="tel" id="f-ecalt" placeholder="Optional"></div>
       </div>
     </div>
     <div class="nav">
@@ -693,7 +693,7 @@ textarea { resize: vertical; min-height: 72px; }
           <input type="date" id="f-decldate">
           <span class="err-msg" id="e-decldate">Please enter today's date.</span>
         </div>
-        <div class="fi span2"><label class="lbl">Additional remarks to HR</label><textarea placeholder="Anything else you would like HR to know..."></textarea></div>
+        <div class="fi span2"><label class="lbl">Additional remarks to HR</label><textarea id="f-remarks" placeholder="Anything else you would like HR to know..."></textarea></div>
       </div>
     </div>
     <div class="nav"><button class="btn btn-back" onclick="prevPage()">&#8592; Back</button></div>
@@ -988,18 +988,18 @@ async function submitForm() {
       // Personal
       residencyStatus: staffType === 'sc' ? 'Singapore Citizen (SC)' : staffType === 'pr' ? 'Singapore Permanent Resident (PR)' : 'Foreigner',
       fullName: safeGet('f-fullname'),
-      preferredName: safeQuery('input[placeholder="e.g. Jason"]'),
+      preferredName: safeGet('f-prefname'),
       gender: safeGet('f-gender'),
       dob: safeGet('f-dob'),
       nationality: safeGet('f-nationality'),
-      race: safeQuery('select option:checked') || '',
+      race: safeGet('f-race'),
       religion: safeGet('religion-sel'),
-      religionOther: safeQuery('#religion-other-wrap input'),
+      religionOther: safeGet('f-religion-other'),
       maritalStatus: safeGet('f-marital'),
-      numChildren: safeQuery('input[placeholder="0"]'),
+      numChildren: safeGet('f-children'),
       // Identification
       nric: safeGet('f-nric') || safeGet('f-nric-pr'),
-      nricIssueDate: '',
+      nricIssueDate: safeGet('f-nric-issue-sc') || safeGet('f-nric-issue-pr'),
       prDate: safeGet('f-prdate'),
       repExpiry: safeGet('f-rep'),
       countryOfBirth: safeGet('f-cob-pr') || safeGet('f-cob-fg'),
@@ -1007,10 +1007,10 @@ async function submitForm() {
       passportNo: safeGet('f-passport'),
       passportExpiry: safeGet('f-passport-exp'),
       placeOfBirth: safeGet('f-pob'),
-      currentPassType: '',
-      finNo: '',
-      passExpiry: '',
-      currentEmployer: '',
+      currentPassType: safeGet('f-passtype'),
+      finNo: safeGet('f-fin'),
+      passExpiry: safeGet('f-passexpiry'),
+      currentEmployer: safeGet('f-currentemployer'),
       // Education (foreigner)
       highestQual: safeGet('f-qual'),
       fieldOfStudy: safeGet('f-fos'),
@@ -1021,68 +1021,68 @@ async function submitForm() {
       // Overseas address
       overseasStreet: safeGet('f-ovstreet'),
       overseasCity: safeGet('f-ovcity'),
-      overseasPostcode: '',
+      overseasPostcode: safeGet('f-ovpostcode'),
       overseasCountry: safeGet('f-ovcountry'),
       // Work experience
       hasExp: safeGet('f-hasexp'),
       sgRole: safeGet('f-sgrole'),
-      jobDuties: '',
+      jobDuties: safeGet('f-jobduties'),
       yrsExp: safeGet('f-yrsexp'),
       recentTitle: safeGet('f-recenttitle'),
       co1Name: safeGet('f-co1name'),
-      co1Address: '',
+      co1Address: safeGet('f-co1address'),
       co1Title: safeGet('f-co1title'),
-      co1Industry: '',
+      co1Industry: safeGet('f-co1industry'),
       co1Join: safeGet('f-co1join'),
-      co1Left: '',
-      co1Salary: '',
-      co1Reason: '',
-      co1Resp: '',
-      co2Name: '',
-      co2Address: '',
-      co2Title: '',
-      co2Industry: '',
-      co2Join: '',
-      co2Left: '',
-      co2Salary: '',
-      co2Reason: '',
-      co2Resp: '',
+      co1Left: safeGet('f-co1left'),
+      co1Salary: safeGet('f-co1salary'),
+      co1Reason: safeGet('f-co1reason'),
+      co1Resp: safeGet('f-co1resp'),
+      co2Name: safeGet('f-co2name'),
+      co2Address: safeGet('f-co2address'),
+      co2Title: safeGet('f-co2title'),
+      co2Industry: safeGet('f-co2industry'),
+      co2Join: safeGet('f-co2join'),
+      co2Left: safeGet('f-co2left'),
+      co2Salary: safeGet('f-co2salary'),
+      co2Reason: safeGet('f-co2reason'),
+      co2Resp: safeGet('f-co2resp'),
       // Contact
       sgMobile: safeGet('f-mobile'),
-      overseasMobile: '',
+      overseasMobile: safeGet('f-overseaphone'),
       personalEmail: safeGet('f-email'),
       sgStreet: safeGet('f-street'),
-      unitNo: '',
+      unitNo: safeGet('f-unitno'),
       postalCode: safeGet('f-postal'),
-      accomType: '',
-      accomStatus: '',
+      accomType: safeGet('f-accomtype'),
+      accomStatus: safeGet('f-accomstatus'),
       // Employment
       jobTitle: safeGet('f-jobtitle'),
-      department: '',
+      department: safeGet('f-department'),
       startDate: safeGet('f-startdate'),
       empType: safeGet('f-emptype'),
       salary: safeGet('f-salary'),
-      allowances: '',
-      probation: '',
-      workArrange: '',
+      allowances: safeGet('f-allowances'),
+      probation: safeGet('f-probation'),
+      workArrange: safeGet('f-workarrange'),
       taxResidency: safeGet('f-taxres'),
       // Bank
       bankName: safeGet('f-bank'),
       otherBank: safeGet('f-otherbank'),
       accNo: safeGet('f-accno'),
-      accType: '',
-      paynow: '',
+      accType: safeGet('f-acctype'),
+      paynow: safeGet('f-paynow'),
       // Emergency
       ecName: safeGet('f-ecname'),
       ecRel: safeGet('f-ecrel'),
       ecNo: safeGet('f-ecno'),
-      ecAlt: '',
+      ecAlt: safeGet('f-ecalt'),
       // Documents
       documents: getChecked('.check-list input[type=checkbox]'),
       // Declaration
       declName: safeGet('f-declname'),
       declDate: safeGet('f-decldate'),
-      remarks: '',
+      remarks: safeGet('f-remarks'),
       // Files
       files: files
     };
