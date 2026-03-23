@@ -908,7 +908,8 @@ var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxDHxgkZyYSFaHoVD6MFo
 
 function getVal(id) {
   var el = document.getElementById(id);
-  return el ? el.value.trim() : '';
+  // Check if element exists AND has a value property before calling trim
+  return (el && el.value) ? el.value.trim() : '';
 }
 
 function getChecked(selector) {
