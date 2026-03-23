@@ -908,16 +908,37 @@ var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxDHxgkZyYSFaHoVD6MFo
 
 function getVal(id) {
   var el = document.getElementById(id);
-  // Check if element exists AND has a value property before calling trim
-  return (el && el.value) ? el.value.trim() : '';
+  return el ? el.value.trim() : '';
 }
 
 function getChecked(selector) {
   var checked = [];
-  document.querySelectorAll(selector + ':checked').forEach(function(cb) {
-    checked.push(cb.closest('.check-opt').textContent.trim());
-  });
+  try {
+    document.querySelectorAll(selector).forEach(function(cb) {
+      if (cb.checked) {
+        var opt = cb.closest('.check-opt');
+        if (opt) {
+          var txt = opt.innerText || opt.textContent || '';
+          checked.push(txt.split('\n')[0].trim());
+        }
+      }
+    });
+  } catch(e) { console.log('getChecked error:', e); }
   return checked;
+}
+
+function safeGet(id) {
+  try {
+    var el = document.getElementById(id);
+    return (el && el.value !== undefined) ? String(el.value).trim() : '';
+  } catch(e) { return ''; }
+}
+
+function safeQuery(sel) {
+  try {
+    var el = document.querySelector(sel);
+    return (el && el.value !== undefined) ? String(el.value).trim() : '';
+  } catch(e) { return ''; }
 }
 
 async function fileToBase64(file) {
@@ -964,53 +985,53 @@ async function submitForm() {
     var data = {
       // Personal
       residencyStatus: staffType === 'sc' ? 'Singapore Citizen (SC)' : staffType === 'pr' ? 'Singapore Permanent Resident (PR)' : 'Foreigner',
-      fullName: getVal('f-fullname'),
-      preferredName: document.querySelector('input[placeholder="e.g. Jason"]') ? document.querySelector('input[placeholder="e.g. Jason"]').value : '',
-      gender: getVal('f-gender'),
-      dob: getVal('f-dob'),
-      nationality: getVal('f-nationality'),
-      race: document.querySelector('select[id^=""]') ? '' : '',
-      religion: getVal('religion-sel'),
-      religionOther: getVal('religion-other-wrap') ? document.querySelector('#religion-other-wrap input') ? document.querySelector('#religion-other-wrap input').value : '' : '',
-      maritalStatus: getVal('f-marital'),
-      numChildren: document.querySelector('input[placeholder="0"]') ? document.querySelector('input[placeholder="0"]').value : '',
+      fullName: safeGet('f-fullname'),
+      preferredName: safeQuery('input[placeholder="e.g. Jason"]'),
+      gender: safeGet('f-gender'),
+      dob: safeGet('f-dob'),
+      nationality: safeGet('f-nationality'),
+      race: safeQuery('select option:checked') || '',
+      religion: safeGet('religion-sel'),
+      religionOther: safeQuery('#religion-other-wrap input'),
+      maritalStatus: safeGet('f-marital'),
+      numChildren: safeQuery('input[placeholder="0"]'),
       // Identification
-      nric: getVal('f-nric') || getVal('f-nric-pr'),
+      nric: safeGet('f-nric') || safeGet('f-nric-pr'),
       nricIssueDate: '',
-      prDate: getVal('f-prdate'),
-      repExpiry: getVal('f-rep'),
-      countryOfBirth: getVal('f-cob-pr') || getVal('f-cob-fg'),
-      prYear: getVal('f-pryear'),
-      passportNo: getVal('f-passport'),
-      passportExpiry: getVal('f-passport-exp'),
-      placeOfBirth: getVal('f-pob'),
+      prDate: safeGet('f-prdate'),
+      repExpiry: safeGet('f-rep'),
+      countryOfBirth: safeGet('f-cob-pr') || safeGet('f-cob-fg'),
+      prYear: safeGet('f-pryear'),
+      passportNo: safeGet('f-passport'),
+      passportExpiry: safeGet('f-passport-exp'),
+      placeOfBirth: safeGet('f-pob'),
       currentPassType: '',
       finNo: '',
       passExpiry: '',
       currentEmployer: '',
       // Education (foreigner)
-      highestQual: getVal('f-qual'),
-      fieldOfStudy: getVal('f-fos'),
-      institution: getVal('f-inst'),
-      institutionCountry: getVal('f-instcountry'),
-      gradYear: getVal('f-gradyear'),
-      courseDuration: getVal('f-duration'),
+      highestQual: safeGet('f-qual'),
+      fieldOfStudy: safeGet('f-fos'),
+      institution: safeGet('f-inst'),
+      institutionCountry: safeGet('f-instcountry'),
+      gradYear: safeGet('f-gradyear'),
+      courseDuration: safeGet('f-duration'),
       // Overseas address
-      overseasStreet: getVal('f-ovstreet'),
-      overseasCity: getVal('f-ovcity'),
+      overseasStreet: safeGet('f-ovstreet'),
+      overseasCity: safeGet('f-ovcity'),
       overseasPostcode: '',
-      overseasCountry: getVal('f-ovcountry'),
+      overseasCountry: safeGet('f-ovcountry'),
       // Work experience
-      hasExp: getVal('f-hasexp'),
-      sgRole: getVal('f-sgrole'),
+      hasExp: safeGet('f-hasexp'),
+      sgRole: safeGet('f-sgrole'),
       jobDuties: '',
-      yrsExp: getVal('f-yrsexp'),
-      recentTitle: getVal('f-recenttitle'),
-      co1Name: getVal('f-co1name'),
+      yrsExp: safeGet('f-yrsexp'),
+      recentTitle: safeGet('f-recenttitle'),
+      co1Name: safeGet('f-co1name'),
       co1Address: '',
-      co1Title: getVal('f-co1title'),
+      co1Title: safeGet('f-co1title'),
       co1Industry: '',
-      co1Join: getVal('f-co1join'),
+      co1Join: safeGet('f-co1join'),
       co1Left: '',
       co1Salary: '',
       co1Reason: '',
@@ -1025,40 +1046,40 @@ async function submitForm() {
       co2Reason: '',
       co2Resp: '',
       // Contact
-      sgMobile: getVal('f-mobile'),
+      sgMobile: safeGet('f-mobile'),
       overseasMobile: '',
-      personalEmail: getVal('f-email'),
-      sgStreet: getVal('f-street'),
+      personalEmail: safeGet('f-email'),
+      sgStreet: safeGet('f-street'),
       unitNo: '',
-      postalCode: getVal('f-postal'),
+      postalCode: safeGet('f-postal'),
       accomType: '',
       accomStatus: '',
       // Employment
-      jobTitle: getVal('f-jobtitle'),
+      jobTitle: safeGet('f-jobtitle'),
       department: '',
-      startDate: getVal('f-startdate'),
-      empType: getVal('f-emptype'),
-      salary: getVal('f-salary'),
+      startDate: safeGet('f-startdate'),
+      empType: safeGet('f-emptype'),
+      salary: safeGet('f-salary'),
       allowances: '',
       probation: '',
       workArrange: '',
-      taxResidency: getVal('f-taxres'),
+      taxResidency: safeGet('f-taxres'),
       // Bank
-      bankName: getVal('f-bank'),
-      otherBank: getVal('f-otherbank'),
-      accNo: getVal('f-accno'),
+      bankName: safeGet('f-bank'),
+      otherBank: safeGet('f-otherbank'),
+      accNo: safeGet('f-accno'),
       accType: '',
       paynow: '',
       // Emergency
-      ecName: getVal('f-ecname'),
-      ecRel: getVal('f-ecrel'),
-      ecNo: getVal('f-ecno'),
+      ecName: safeGet('f-ecname'),
+      ecRel: safeGet('f-ecrel'),
+      ecNo: safeGet('f-ecno'),
       ecAlt: '',
       // Documents
       documents: getChecked('.check-list input[type=checkbox]'),
       // Declaration
-      declName: getVal('f-declname'),
-      declDate: getVal('f-decldate'),
+      declName: safeGet('f-declname'),
+      declDate: safeGet('f-decldate'),
       remarks: '',
       // Files
       files: files
