@@ -55,6 +55,17 @@ textarea { resize: vertical; min-height: 72px; }
 .radio-card .rc-title { font-size: 14px; font-weight: 500; color: #1a1a1a; }
 .radio-card .rc-sub { font-size: 12px; color: #666; margin-top: 3px; }
 .radio-card.selected { border-color: #185FA5; background: #E6F1FB; }
+/* ── Yes/No toggle buttons ───────────────────────────────── */
+.yn-group { display: flex; gap: 10px; margin-top: 4px; }
+.yn-btn {
+  flex: 1; padding: 10px 0; border-radius: 8px; font-size: 14px; font-weight: 500;
+  cursor: pointer; border: 0.5px solid #ccc; background: #fff; color: #666;
+  font-family: inherit; transition: all 0.15s;
+}
+.yn-btn:hover { border-color: #185FA5; color: #185FA5; }
+.yn-btn.yn-yes.active { background: #E1F5EE; border-color: #0F6E56; color: #0F6E56; }
+.yn-btn.yn-no.active  { background: #FAEEDA; border-color: #854F0B; color: #854F0B; }
+/* ── end toggle ──────────────────────────────────────────── */
 .nav { display: flex; gap: 10px; margin-top: 1rem; }
 .btn { padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; font-family: inherit; }
 .btn-primary { background: #185FA5; color: #fff; }
@@ -422,24 +433,48 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
       </div>
     </div>
+
+    <!-- ── CHANGE 1: Singapore address Yes/No toggle ──────── -->
     <div class="card">
       <div class="sec-title">Singapore residential address</div>
-      <div class="grid2">
-        <div class="fi span2">
-          <label class="lbl">Block and street name <span class="req">*</span></label>
-          <input type="text" id="f-street" placeholder="e.g. Blk 123 Ang Mo Kio Ave 3">
-          <span class="err-msg" id="e-street">Please enter your block and street name.</span>
+      <div class="fi" style="margin-bottom:14px;">
+        <label class="lbl">Do you currently stay in Singapore? <span class="req">*</span></label>
+        <div class="info-box" style="margin-bottom:10px;margin-top:4px;">
+          If you commute daily from overseas (e.g. Johor Bahru) and do not have a Singapore residential address, select <strong>No</strong> and skip this section.
         </div>
-        <div class="fi"><label class="lbl">Unit number</label><input type="text" id="f-unitno" placeholder="e.g. #05-23"></div>
-        <div class="fi">
-          <label class="lbl">Postal code <span class="req">*</span></label>
-          <input type="text" id="f-postal" placeholder="e.g. 560123" maxlength="6">
-          <span class="err-msg" id="e-postal">Please enter your postal code.</span>
+        <div class="yn-group">
+          <button type="button" class="yn-btn yn-yes" id="yn-sg-yes" onclick="toggleSgAddress(true)">Yes — I stay in Singapore</button>
+          <button type="button" class="yn-btn yn-no"  id="yn-sg-no"  onclick="toggleSgAddress(false)">No — I commute from overseas</button>
         </div>
-        <div class="fi"><label class="lbl">Type of accommodation</label><select id="f-accomtype"><option value="">Select</option><option>HDB flat</option><option>Private apartment / Condominium</option><option>Landed property</option><option>Service apartment</option><option>Employer-provided dormitory</option><option>Rented room</option><option>Others</option></select></div>
-        <div class="fi"><label class="lbl">Accommodation status</label><select id="f-accomstatus"><option value="">Select</option><option>Owner</option><option>Renting</option><option>Living with family</option><option>Employer-provided</option></select></div>
+        <span class="err-msg" id="e-sg-stay">Please indicate whether you stay in Singapore.</span>
+      </div>
+
+      <div id="sg-address-fields" style="display:none;">
+        <div class="grid2">
+          <div class="fi span2">
+            <label class="lbl">Block and street name <span class="req">*</span></label>
+            <input type="text" id="f-street" placeholder="e.g. Blk 123 Ang Mo Kio Ave 3">
+            <span class="err-msg" id="e-street">Please enter your block and street name.</span>
+          </div>
+          <div class="fi"><label class="lbl">Unit number</label><input type="text" id="f-unitno" placeholder="e.g. #05-23"></div>
+          <div class="fi">
+            <label class="lbl">Postal code <span class="req">*</span></label>
+            <input type="text" id="f-postal" placeholder="e.g. 560123" maxlength="6">
+            <span class="err-msg" id="e-postal">Please enter your postal code.</span>
+          </div>
+          <div class="fi"><label class="lbl">Type of accommodation</label><select id="f-accomtype"><option value="">Select</option><option>HDB flat</option><option>Private apartment / Condominium</option><option>Landed property</option><option>Service apartment</option><option>Employer-provided dormitory</option><option>Rented room</option><option>Others</option></select></div>
+          <div class="fi"><label class="lbl">Accommodation status</label><select id="f-accomstatus"><option value="">Select</option><option>Owner</option><option>Renting</option><option>Living with family</option><option>Employer-provided</option></select></div>
+        </div>
+      </div>
+
+      <div id="sg-address-skip" style="display:none;">
+        <div class="info-box teal">
+          ✓ Understood — Singapore residential address section skipped. Please make sure your overseas address is filled in if required.
+        </div>
       </div>
     </div>
+    <!-- ── end CHANGE 1 ───────────────────────────────────── -->
+
     <div id="overseas-addr" style="display:none;">
       <div class="card">
         <div class="sec-title">Overseas home address</div>
@@ -539,6 +574,14 @@ textarea { resize: vertical; min-height: 72px; }
         </div>
         <div class="fi"><label class="lbl">Account type</label><select id="f-acctype"><option value="">Select</option><option>Savings</option><option>Current</option></select></div>
         <div class="fi"><label class="lbl">PayNow (mobile / NRIC / FIN)</label><input type="text" id="f-paynow" placeholder="Optional"></div>
+
+        <!-- ── CHANGE 2: Swift / BIC code (optional, for all) ── -->
+        <div class="fi span2">
+          <label class="lbl">SWIFT / BIC code <span style="font-size:12px;color:#999;font-weight:400;">(optional — required if your bank is overseas)</span></label>
+          <input type="text" id="f-swift" placeholder="e.g. DBSSSGSG or MBBEMYKL" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+          <span class="helper">8 or 11 characters. Required for international / overseas bank accounts. Leave blank if your bank is in Singapore and salary is credited locally.</span>
+        </div>
+        <!-- ── end CHANGE 2 ──────────────────────────────────── -->
       </div>
     </div>
     <div class="card">
@@ -592,7 +635,7 @@ textarea { resize: vertical; min-height: 72px; }
           <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-sc4',this)"> Bank account proof (statement / passbook)</label>
           <div class="upload-slot" id="u-sc4">
             <p style="font-size:12px;color:#854F0B;background:#FAEEDA;border:0.5px solid #FAC775;border-radius:6px;padding:8px 10px;margin-bottom:6px;line-height:1.6;">
-              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>. A bank statement, passbook front page, or a screenshot from your internet banking account page is acceptable. Make sure all 3 details are visible — blurred or cropped documents will not be accepted.
+              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>.
             </p>
             <label class="lbl">Upload bank proof</label>
             <input type="file" accept=".pdf,.jpg,.jpeg,.png">
@@ -629,7 +672,7 @@ textarea { resize: vertical; min-height: 72px; }
           <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-pr6',this)"> Bank account proof</label>
           <div class="upload-slot" id="u-pr6">
             <p style="font-size:12px;color:#854F0B;background:#FAEEDA;border:0.5px solid #FAC775;border-radius:6px;padding:8px 10px;margin-bottom:6px;line-height:1.6;">
-              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>. A bank statement, passbook front page, or a screenshot from your internet banking account page is acceptable. Make sure all 3 details are visible — blurred or cropped documents will not be accepted.
+              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>.
             </p>
             <label class="lbl">Upload bank proof</label>
             <input type="file" accept=".pdf,.jpg,.jpeg,.png">
@@ -662,7 +705,7 @@ textarea { resize: vertical; min-height: 72px; }
           <label class="check-opt"><input type="checkbox" onchange="toggleUpload('u-fg6',this)"> Bank account proof</label>
           <div class="upload-slot" id="u-fg6">
             <p style="font-size:12px;color:#854F0B;background:#FAEEDA;border:0.5px solid #FAC775;border-radius:6px;padding:8px 10px;margin-bottom:6px;line-height:1.6;">
-              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>. A bank statement, passbook front page, or a screenshot from your internet banking account page is acceptable. Make sure all 3 details are visible — blurred or cropped documents will not be accepted.
+              &#128161; Your document must clearly show: <strong>your full name</strong>, <strong>your address</strong>, and <strong>your account number</strong>.
             </p>
             <label class="lbl">Upload bank proof</label>
             <input type="file" accept=".pdf,.jpg,.jpeg,.png">
@@ -720,6 +763,7 @@ textarea { resize: vertical; min-height: 72px; }
 <script>
 let staffType = '';
 let currentPage = 0;
+let staysInSg = null; // null = not answered, true = yes, false = no
 const scPages = [0,1,2,4,5,6,7,8,9];
 const fgPages = [0,1,2,3,4,5,6,7,8,9];
 
@@ -759,6 +803,29 @@ function toggleUpload(slotId, cb) {
   if (slot) slot.classList.toggle('show', cb.checked);
 }
 
+// ── CHANGE 1: SG address toggle logic ────────────────────────
+function toggleSgAddress(yes) {
+  staysInSg = yes;
+  document.getElementById('yn-sg-yes').classList.toggle('active', yes);
+  document.getElementById('yn-sg-no').classList.toggle('active', !yes);
+  document.getElementById('sg-address-fields').style.display = yes ? 'block' : 'none';
+  document.getElementById('sg-address-skip').style.display = yes ? 'none' : 'block';
+  // Clear error if answered
+  document.getElementById('e-sg-stay').classList.remove('show');
+  // Clear field errors when skipping
+  if (!yes) {
+    ['f-street','f-postal'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) { el.classList.remove('error'); el.value = ''; }
+    });
+    ['e-street','e-postal'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('show');
+    });
+  }
+}
+// ── end CHANGE 1 ─────────────────────────────────────────────
+
 function applyTypeUI() {
   const isSC = staffType === 'sc';
   const isPR = staffType === 'pr';
@@ -779,7 +846,7 @@ function applyTypeUI() {
 
 function chk(id, errId) {
   const el = document.getElementById(id);
-  if (!el || el.offsetParent === null) return true; // skip hidden fields
+  if (!el || el.offsetParent === null) return true;
   const val = el.value.trim();
   const invalid = (el.tagName === 'SELECT') ? val === '' : val === '';
   const errEl = document.getElementById(errId);
@@ -835,8 +902,15 @@ function validatePage(page) {
   if (page === 5) {
     ok = chk('f-mobile','e-mobile') & ok;
     ok = chk('f-email','e-email') & ok;
-    ok = chk('f-street','e-street') & ok;
-    ok = chk('f-postal','e-postal') & ok;
+    // ── CHANGE 1: validate SG address toggle ─────────────────
+    if (staysInSg === null) {
+      document.getElementById('e-sg-stay').classList.add('show');
+      ok = false;
+    } else if (staysInSg === true) {
+      ok = chk('f-street','e-street') & ok;
+      ok = chk('f-postal','e-postal') & ok;
+    }
+    // ── end CHANGE 1 ─────────────────────────────────────────
     if (staffType === 'foreigner') {
       ok = chk('f-ovstreet','e-ovstreet') & ok;
       ok = chk('f-ovcity','e-ovcity') & ok;
@@ -847,7 +921,6 @@ function validatePage(page) {
     ok = chk('f-jobtitle','e-jobtitle') & ok;
     ok = chk('f-startdate','e-startdate') & ok;
     ok = chk('f-emptype','e-emptype') & ok;
-    // salary is optional — staff refer to employment contract
     if (staffType === 'foreigner') ok = chk('f-taxres','e-taxres') & ok;
   }
   if (page === 7) {
@@ -905,7 +978,6 @@ function prevPage() {
   if (idx > 0) { currentPage = pages[idx - 1]; showPage(currentPage); }
 }
 
-// ── IMPORTANT: Paste your Web App URL here after deploying ──
 var WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxDHxgkZyYSFaHoVD6MFogYs8zZ8ASKSrk1W07nO_Ab-EGmwbJwZs_ZhLsXVKCzXYHU/exec';
 
 function getVal(id) {
@@ -932,13 +1004,6 @@ function getChecked(selector) {
 function safeGet(id) {
   try {
     var el = document.getElementById(id);
-    return (el && el.value !== undefined) ? String(el.value).trim() : '';
-  } catch(e) { return ''; }
-}
-
-function safeQuery(sel) {
-  try {
-    var el = document.querySelector(sel);
     return (el && el.value !== undefined) ? String(el.value).trim() : '';
   } catch(e) { return ''; }
 }
@@ -973,19 +1038,15 @@ async function collectFiles() {
 async function submitForm() {
   if (!validatePage(8)) return;
 
-  // Show submitting state
   var btn = document.querySelector('.btn-submit');
   btn.textContent = 'Submitting... please wait';
   btn.disabled = true;
   btn.style.background = '#999';
 
   try {
-    // Collect all files
     var files = await collectFiles();
 
-    // Collect all form data
     var data = {
-      // Personal
       residencyStatus: staffType === 'sc' ? 'Singapore Citizen (SC)' : staffType === 'pr' ? 'Singapore Permanent Resident (PR)' : 'Foreigner',
       fullName: safeGet('f-fullname'),
       preferredName: safeGet('f-prefname'),
@@ -997,7 +1058,6 @@ async function submitForm() {
       religionOther: safeGet('f-religion-other'),
       maritalStatus: safeGet('f-marital'),
       numChildren: safeGet('f-children'),
-      // Identification
       nric: safeGet('f-nric') || safeGet('f-nric-pr'),
       nricIssueDate: safeGet('f-nric-issue-sc') || safeGet('f-nric-issue-pr'),
       prDate: safeGet('f-prdate'),
@@ -1011,19 +1071,16 @@ async function submitForm() {
       finNo: safeGet('f-fin'),
       passExpiry: safeGet('f-passexpiry'),
       currentEmployer: safeGet('f-currentemployer'),
-      // Education (foreigner)
       highestQual: safeGet('f-qual'),
       fieldOfStudy: safeGet('f-fos'),
       institution: safeGet('f-inst'),
       institutionCountry: safeGet('f-instcountry'),
       gradYear: safeGet('f-gradyear'),
       courseDuration: safeGet('f-duration'),
-      // Overseas address
       overseasStreet: safeGet('f-ovstreet'),
       overseasCity: safeGet('f-ovcity'),
       overseasPostcode: safeGet('f-ovpostcode'),
       overseasCountry: safeGet('f-ovcountry'),
-      // Work experience
       hasExp: safeGet('f-hasexp'),
       sgRole: safeGet('f-sgrole'),
       jobDuties: safeGet('f-jobduties'),
@@ -1047,16 +1104,16 @@ async function submitForm() {
       co2Salary: safeGet('f-co2salary'),
       co2Reason: safeGet('f-co2reason'),
       co2Resp: safeGet('f-co2resp'),
-      // Contact
       sgMobile: safeGet('f-mobile'),
       overseasMobile: safeGet('f-overseaphone'),
       personalEmail: safeGet('f-email'),
-      sgStreet: safeGet('f-street'),
-      unitNo: safeGet('f-unitno'),
-      postalCode: safeGet('f-postal'),
-      accomType: safeGet('f-accomtype'),
-      accomStatus: safeGet('f-accomstatus'),
-      // Employment
+      // ── SG address — only populated if candidate stays in SG
+      staysInSingapore: staysInSg ? 'Yes' : 'No — commutes from overseas',
+      sgStreet: staysInSg ? safeGet('f-street') : '',
+      unitNo: staysInSg ? safeGet('f-unitno') : '',
+      postalCode: staysInSg ? safeGet('f-postal') : '',
+      accomType: staysInSg ? safeGet('f-accomtype') : '',
+      accomStatus: staysInSg ? safeGet('f-accomstatus') : '',
       jobTitle: safeGet('f-jobtitle'),
       department: safeGet('f-department'),
       startDate: safeGet('f-startdate'),
@@ -1066,37 +1123,31 @@ async function submitForm() {
       probation: safeGet('f-probation'),
       workArrange: safeGet('f-workarrange'),
       taxResidency: safeGet('f-taxres'),
-      // Bank
       bankName: safeGet('f-bank'),
       otherBank: safeGet('f-otherbank'),
       accNo: safeGet('f-accno'),
       accType: safeGet('f-acctype'),
       paynow: safeGet('f-paynow'),
-      // Emergency
+      swiftCode: safeGet('f-swift'), // ── CHANGE 2
       ecName: safeGet('f-ecname'),
       ecRel: safeGet('f-ecrel'),
       ecNo: safeGet('f-ecno'),
       ecAlt: safeGet('f-ecalt'),
-      // Documents
       documents: getChecked('.check-list input[type=checkbox]'),
-      // Declaration
       declName: safeGet('f-declname'),
       declDate: safeGet('f-decldate'),
       remarks: safeGet('f-remarks'),
-      // Files
       files: files
     };
 
-    // Check if Web App URL is configured
     if (WEB_APP_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
-      alert('Web App URL not configured yet. Please follow setup instructions to deploy the Apps Script and paste the URL.');
+      alert('Web App URL not configured yet.');
       btn.textContent = 'Submit onboarding form';
       btn.disabled = false;
       btn.style.background = '#0F6E56';
       return;
     }
 
-    // Submit to Google Apps Script Web App
     var response = await fetch(WEB_APP_URL, {
       method: 'POST',
       body: JSON.stringify(data)
@@ -1105,7 +1156,6 @@ async function submitForm() {
     var result = await response.json();
 
     if (result.status === 'success') {
-      // Show success page
       currentPage = 9;
       document.querySelectorAll('.page').forEach(function(el) { el.classList.remove('active'); });
       document.getElementById('p9').classList.add('active');
